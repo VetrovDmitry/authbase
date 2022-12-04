@@ -1,0 +1,9 @@
+[{
+  "API_SPECIFICATION": {
+    "API_VERSION": "0.0.1",
+    "TITLE": "TITLE_TITLE API",
+    "OPENAPI_VERSION": "2.0.0",
+    "SWAGGER_URL": "/api-specification.json",
+    "SWAGGER_UI_URL": "/api-ui/"
+  }
+}]
