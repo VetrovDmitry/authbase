@@ -9,6 +9,7 @@ import logging
 from .database import db, migrate
 from .utils import read_api_config
 from .config import CONFIGS
+from .utils import mail
 
 
 API_CONFIG = read_api_config()
@@ -47,3 +48,14 @@ def create_app():
     migrate.init_app(flask_app, db)
 
     mail.init_app(flask_app)
+
+    flask_app = create_spec_and_doc(flask_app)
+
+    logging.basicConfig(
+        filename='record.log',
+        level=logging.DEBUG,
+        format='%(asctime)s %(levelname)s : %(message)s'
+    )
+
+    return flask_app
+
