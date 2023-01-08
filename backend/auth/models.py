@@ -46,6 +46,51 @@ class User(db.Model, Base):
     admin = relationship('Admin', back_populates='user', uselist=False, lazy=True)
     tokens = relationship('Token', back_populates='user', uselist=True)
 
+    def __init__(self, first_name: str, last_name: str, username: str, sex: str, birth_date: datetime.date,
+                 email: str, password: str) -> None:
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
+        self.sex = HumanGender(sex)
+        self.birth_date = birth_date
+        self.email = email
+        self.hash = self.create_hash(password)
+        self.status = UserStatus('unconfirmed')
+        self.upload()
+
+    def __repr__(self):
+        return f"user: {self.fullname}"
+
+    @property
+    def fullname(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def public_info(self) -> dict:
+        return {
+            'id': self.id,
+            'fullName': self.fullname,
+            'username': self.username,
+            'email': self.email,
+            'time_created': self.time_created.isoformat()
+        }
+
+    @classmethod
+    def find_by_username(cls, username: str):
+        return cls.query.filter_by(username=username).first()
+
+    @classmethod
+    def find_by_email(cls, email: str):
+        return cls.query.filter_by(email=email).first()
+
+    @staticmethod
+    def create_hash(password: str) -> str:
+        return generate_password_hash(password).decode('UTF-8')
+
+    def verify_password(self, password: str) -> bool:
+        return check_password_hash(self.hash, password)
+
+
 
 class AdminStatus(enum.Enum):
     ADMIN = 'admin'

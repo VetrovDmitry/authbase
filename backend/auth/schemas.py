@@ -21,3 +21,12 @@ class NewUserSchema(Schema):
         in_data['birthDate'] = in_data.get('birthDate')
         in_data['email'] = in_data.get('email').lower()
         in_data['password'] = in_data.get('password')
+        return in_data
+
+
+class PublicUserSchema(Schema):
+    id = fields.Int()
+    fullName = fields.Str()
+    username = fields.Str()
+    email = fields.Email()
+    time_created = fields.DateTime()

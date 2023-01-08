@@ -35,6 +35,9 @@ def create_spec_and_doc(app):
         api.add_resource(component, component_route)
         docs.register(component)
 
+    from .auth import endpoints as auth_endpoints
+    add_component(auth_endpoints.AddUserApi, '/user')
+
     return app
 
 
